@@ -10,13 +10,14 @@
  * WXR Parser that uses regular expressions. Fallback for installs without an XML parser.
  */
 class WXR_Parser_Regex {
-	var $authors       = array();
-	var $posts         = array();
-	var $categories    = array();
-	var $tags          = array();
-	var $terms         = array();
-	var $base_url      = '';
-	var $base_blog_url = '';
+	public $authors       = array();
+	public $posts         = array();
+	public $categories    = array();
+	public $tags          = array();
+	public $terms         = array();
+	public $base_url      = '';
+	public $base_blog_url = '';
+	public $has_gzip;
 
 	function __construct() {
 		$this->has_gzip = is_callable( 'gzopen' );
@@ -55,7 +56,7 @@ class WXR_Parser_Regex {
 					preg_match( '|<wp:base_blog_url>(.*?)</wp:base_blog_url>|is', $importline, $blog_url );
 					$this->base_blog_url = $blog_url[1];
 					continue;
-				} else {
+				} elseif ( empty( $this->base_blog_url ) ) {
 					$this->base_blog_url = $this->base_url;
 				}
 
